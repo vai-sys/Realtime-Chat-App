@@ -96,6 +96,19 @@ const Profile = () => {
     return '?';
   };
 
+  const handleFileInputClick=()=>{
+    fileInputRef.current.click();
+  }
+
+  const handleImageChange=async ()=>{
+
+  }
+  const handleDeleteImage=async ()=>{
+
+  }
+
+ 
+
   return (
     <div className='bg-[#1b1c24] min-h-screen flex items-center justify-center flex-col gap-10'>
       <div className='flex flex-col gap-10 w-[80vw] md:w-max'>
@@ -128,7 +141,7 @@ const Profile = () => {
               )}
             </Avatar>
             {hovered && (
-              <div className='absolute inset-0 flex items-center justify-center bg-black/50 rounded-full cursor-pointer'>
+              <div className='absolute inset-0 flex items-center justify-center bg-black/50 rounded-full cursor-pointer' onClick={image}>
                 {image ? <FaTrash className="text-white text-2xl" /> : <FaPlus className="text-white text-2xl" />}
               </div>
             )}
