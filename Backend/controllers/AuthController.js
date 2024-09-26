@@ -4,6 +4,9 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import {renameSync,unlinkSync} from "fs"
+import path from 'path';
+import fs from 'fs/promises';
 
 const maxAge = 3 * 24 * 60 * 60;
 
@@ -154,7 +157,52 @@ export const updateProfile = async (req, res, next) => {
 
 
 
+export const addProfileImage = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "File is required" });
+    }
+    const date = Date.now();
+    const fileName = `uploads/profiles/${date}-${req.file.originalname}`;
+    const fullPath = path.join(process.cwd(), fileName);
+    
+    await fs.rename(req.file.path, fullPath);
+    
+    const updatedUser = await User.findByIdAndUpdate(
+      req.userId,
+      { image: fileName },
+      { new: true, runValidators: true }
+    );
 
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    return res.status(200).json({
+      image: updatedUser.image
+    });
+  } catch (err) {
+    console.error("Add Profile Image Error:", err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 
+export const removeProfileImage = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user || !user.image) {
+      return res.status(404).json({ message: "No profile image found" });
+    }
 
+    const fullPath = path.join(process.cwd(), user.image);
+    await fs.unlink(fullPath);
+
+    user.image = null;
+    await user.save();
+
+    return res.status(200).json({ message: "Profile image removed successfully" });
+  } catch (err) {
+    console.error("Remove Profile Image Error:", err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
