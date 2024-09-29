@@ -1,5 +1,6 @@
 // ContactsContainer.js
 import React from 'react';
+import ProfileInfo from './components/profile-info';
 
 const ContactsContainer = () => {
   return (
@@ -19,6 +20,7 @@ const ContactsContainer = () => {
         </div>
         
       </div>
+      <ProfileInfo/>
     </div>
   );
 };
