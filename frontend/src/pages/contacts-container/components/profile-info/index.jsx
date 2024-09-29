@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAppStore } from '@/store';
-import { HOST } from '@/utils/Constants';
+import { HOST, LOGOUT_ROUTE } from '@/utils/Constants';
 import {
   Tooltip,
   TooltipContent,
@@ -11,20 +11,30 @@ import {
 import { FiEdit2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { IoPowerSharp } from 'react-icons/io5';
+import { apiClient } from '@/lib/api-client';
 
 
 
 const ProfileInfo = () => {
-  const { userInfo } = useAppStore();
+  const { userInfo,setUserInfo } = useAppStore();
   const navigate=useNavigate();
   const profileImage = userInfo?.image;
   const firstName = userInfo?.name ? userInfo.name.split(' ')[0] : null;
 
  
-const logout=async()=>{
-
-
-}
+  const logout = async () => {
+    try {
+      const response = await apiClient.post(LOGOUT_ROUTE, {}, { withCredentials: true });
+      if (response.status === 200) {
+        setUserInfo(null);
+        navigate("/auth");
+      }
+    } catch (err) {
+      console.error("Error Response:", err.response?.data || err.message);
+    }
+  };
+  
+  
 
   const generateColorFromString = useCallback((str) => {
     let hash = 0;
@@ -86,7 +96,8 @@ const logout=async()=>{
 
 <TooltipProvider>
   <Tooltip>
-    <TooltipTrigger> <IoPowerSharp  className='text-red-800 font-medium text-2xl '  />  </TooltipTrigger>
+    <TooltipTrigger> <IoPowerSharp className='text-red-800 font-medium text-2xl' onClick={logout} />
+    </TooltipTrigger>
     <TooltipContent className="bg-[#1c1b1e] border-none text-white">
       <p>Logout</p>
     </TooltipContent>

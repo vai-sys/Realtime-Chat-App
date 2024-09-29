@@ -25,7 +25,7 @@ const Chat = () => {
     <div className='flex h-[100vh] text-white overflow-hidden'>
       <ContactsContainer className="w-1/4" />
      {/* <EmptyChatContainer/> */}
-     <ChatContainer/>
+     {/* <ChatContainer/> */}
     </div>
   );
 }
