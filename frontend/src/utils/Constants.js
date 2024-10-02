@@ -12,3 +12,6 @@ export const ADD_PROFILE_IMAGE_ROUTE = `${API_ROUTES}/add-profile-image`;
 export const DELETE_PROFILE_IMAGE_ROUTE = `${API_ROUTES}/remove-profile-image`;
 
 export const LOGOUT_ROUTE=`${API_ROUTES}/logout`
+
+export const CONTACT_ROUTES="api/contacts";
+export const SEARCH_CONTACTS_ROUTES=`${CONTACT_ROUTES}/search`

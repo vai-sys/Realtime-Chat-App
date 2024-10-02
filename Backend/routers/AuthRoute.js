@@ -9,7 +9,7 @@ import {
   addProfileImage,
   removeProfileImage,logout
 } from "../controllers/AuthController.js";
-import { verifyToken } from "../middlewares/AuthMiddleware.js";
+import { verifyToken } from "../middlewares/Authmiddleware.js";
 import multer from "multer";
 import path from "path";
 

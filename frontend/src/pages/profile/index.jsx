@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import { apiClient } from '@/lib/api-client';
 import { ADD_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE, DELETE_PROFILE_IMAGE_ROUTE } from '@/utils/Constants';
 
+
+
 const Profile = () => {
   const { userInfo, setUserInfo } = useAppStore();
   const [firstName, setFirstName] = useState(userInfo.firstName || "");
@@ -20,9 +22,12 @@ const Profile = () => {
   const [hovered, setHovered] = useState(false);
   const [bgColor, setBgColor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isNewUser, setIsNewUser] = useState(!userInfo.firstName || !userInfo.lastName);
   const fileInputRef = useRef(null);
 
   const navigate = useNavigate();
+
+ 
 
   const generateColorFromString = useCallback((str) => {
     let hash = 0;
@@ -55,33 +60,59 @@ const Profile = () => {
     return true;
   };
 
-  const saveChanges = async () => {
-    if (validateProfile()) {
-      setIsLoading(true);
-      try {
-        const response = await apiClient.put(
-          UPDATE_PROFILE_ROUTE,
-          { firstName, lastName },
-          { withCredentials: true }
-        );
 
-        if (response.status === 200) {
-          setUserInfo({ ...userInfo, firstName, lastName });
-          toast.success("Profile Updated Successfully");
-          setTimeout(() => {
-            navigate("/chat");
-          }, 1000);
-        } else {
-          toast.error("Failed to update profile.");
+ 
+  
+    const saveChanges = async () => {
+      if (validateProfile()) {
+        setIsLoading(true);
+        try {
+          const response = await apiClient.put(
+            UPDATE_PROFILE_ROUTE,
+            { firstName, lastName },
+            { withCredentials: true }
+          );
+  
+          if (response.status === 200) {
+            const updatedUserInfo = { ...userInfo, firstName, lastName };
+            setUserInfo(updatedUserInfo);
+            
+           
+            toast.success("Profile Updated Successfully");
+          
+            const isNewUserComplete = isNewUser && firstName && lastName;
+           
+            setTimeout(() => {
+              if (isNewUserComplete) {
+                setIsNewUser(false);  
+                navigate("/chat", { replace: true });  
+              } else if (!isNewUser) {
+                navigate(-1);  
+              }
+            }, 1000);
+          } else {
+            toast.error("Failed to update profile.");
+          }
+        } catch (err) {
+          console.error("Profile update error: ", err);
+          toast.error("An error occurred while updating the profile.");
+        } finally {
+          setIsLoading(false);
         }
-      } catch (err) {
-        console.error("Profile update error: ", err);
-        toast.error("An error occurred while updating the profile.");
-      } finally {
-        setIsLoading(false);
       }
-    }
-  };
+    };
+  
+    const handleBackNavigation = () => {
+      if (isNewUser) {
+       
+        if (!firstName || !lastName) {
+          toast.warning("Please complete your profile first.");
+          return;
+        }
+      }
+      navigate(-1);
+    };
+
 
   const getInitial = () => {
     return firstName ? firstName.charAt(0).toUpperCase() : (userInfo.email ? userInfo.email.charAt(0).toUpperCase() : '?');
@@ -151,9 +182,9 @@ const Profile = () => {
     <div className='bg-[#1b1c24] min-h-screen flex items-center justify-center flex-col gap-10'>
       <div className='flex flex-col gap-10 w-[80vw] md:w-max'>
         <div>
-          <IoArrowBack
+        <IoArrowBack
             className='text-4xl lg:text-6xl text-white/90 cursor-pointer'
-            onClick={() => navigate(-1)}
+            onClick={handleBackNavigation}
           />
         </div>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-5'>

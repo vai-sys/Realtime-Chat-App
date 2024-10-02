@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import authRoutes from "./routers/AuthRoute.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import contactRoutes from "./routers/ContactRoute.js"
 
 dotenv.config();
 const app = express();
@@ -43,6 +44,7 @@ mongoose
   });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/contacts",contactRoutes)
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
