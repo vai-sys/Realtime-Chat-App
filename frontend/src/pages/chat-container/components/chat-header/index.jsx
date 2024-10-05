@@ -45,7 +45,7 @@ const ChatHeader = () => {
                         ) : (
                           <AvatarFallback
                             className="text-black uppercase text-2xl flex items-center justify-center w-full h-full"
-                            style={{ backgroundColor: bgColor }} 
+                            // style={{ backgroundColor: bgColor }} 
                           >
                             {getInitial(selectedChatData)} 
                           </AvatarFallback>
