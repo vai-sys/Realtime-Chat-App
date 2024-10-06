@@ -1,30 +1,66 @@
 
 
-export const createChatSlice = (set, get) => ({
-    selectedChatType: undefined, 
-    selectedChatData: undefined, 
-    selectedChatMessage: [], 
+// export const createChatSlice = (set, get) => ({
+//     selectedChatType: undefined, 
+//     selectedChatData: undefined, 
+//     selectedChatMessage: [], 
 
     
-    setSelectedChatType: (selectedChatType) => set({ selectedChatType }),
+//     setSelectedChatType: (selectedChatType) => set({ selectedChatType }),
 
    
+//     setSelectedChatData: (selectedChatData) => set({ selectedChatData }),
+
+    
+//     setSelectedChatMessage: (selectedChatMessage) => set({ selectedChatMessage }),
+
+    
+//     closeChat: () => set({
+//         selectedChatData: undefined,
+//         selectedChatType: undefined,
+//         selectedChatMessage: [],
+//     }),
+
+    
+//     addMessage: (message) => {
+//         const selectedChatMessage = get().selectedChatMessage; 
+//         const selectedChatType = get().selectedChatType; 
+//         set({
+//             selectedChatMessage: [
+//                 ...selectedChatMessage,
+//                 {
+//                     ...message,
+//                     recipient:
+//                         selectedChatType === "channel" ? message.recipient : message.recipient?._id || message.recipient,
+
+//                       sender: 
+//                       selectedChatType === "channel" ? message.sender : message.sender?._id || message.sender, 
+//                 }
+//             ]
+//         });
+//     }
+// });
+
+export const createChatSlice = (set, get) => ({
+    selectedChatType: undefined,
+    selectedChatData: undefined,
+    selectedChatMessage: [],
+
+    setSelectedChatType: (selectedChatType) => set({ selectedChatType }),
+
     setSelectedChatData: (selectedChatData) => set({ selectedChatData }),
 
-    
     setSelectedChatMessage: (selectedChatMessage) => set({ selectedChatMessage }),
 
-    
     closeChat: () => set({
         selectedChatData: undefined,
         selectedChatType: undefined,
         selectedChatMessage: [],
     }),
 
-    
     addMessage: (message) => {
-        const selectedChatMessage = get().selectedChatMessage; 
-        const selectedChatType = get().selectedChatType; 
+        const selectedChatMessage = get().selectedChatMessage;
+        const selectedChatType = get().selectedChatType;
         set({
             selectedChatMessage: [
                 ...selectedChatMessage,
@@ -32,9 +68,8 @@ export const createChatSlice = (set, get) => ({
                     ...message,
                     recipient:
                         selectedChatType === "channel" ? message.recipient : message.recipient?._id || message.recipient,
-
-                      sender: 
-                      selectedChatType === "channel" ? message.sender : message.sender?._id || message.sender, 
+                    sender:
+                        selectedChatType === "channel" ? message.sender : message.sender?._id || message.sender,
                 }
             ]
         });

@@ -1,4 +1,4 @@
-// ChatHeader.js
+
 import { useAppStore } from '@/store';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import React from 'react';
@@ -45,7 +45,7 @@ const ChatHeader = () => {
                         ) : (
                           <AvatarFallback
                             className="text-black uppercase text-2xl flex items-center justify-center w-full h-full"
-                            // style={{ backgroundColor: bgColor }} 
+                            
                           >
                             {getInitial(selectedChatData)} 
                           </AvatarFallback>
